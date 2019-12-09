@@ -1,0 +1,237 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmicx}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Image Super-Resolution via Online Convolutional Sparse Coding with Perceptual Loss\\
+
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chengbing Yan}
+\IEEEauthorblockA{\textit{School of Software Engineering} \\
+\textit{Xi'an Jiaotong University}\\
+Xi'an, China \\
+godzilla@stu.xjtu.edu.cn}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Li Zhu}
+\IEEEauthorblockA{\textit{School of Software Engineering} \\
+\textit{Xi'an Jiaotong University}\\
+Xi'an, China \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Qiannan Xu}
+\IEEEauthorblockA{\textit{School of Software Engineering} \\
+\textit{Xi'an Jiaotong University}\\
+Xi'an, China \\
+email address or ORCID}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{Xi'an Jiaotong University}\\
+Xi'an, China \\
+email address or ORCID}
+
+}
+
+\maketitle
+
+\begin{abstract}
+Image super-resolution (SR) aims to reconstruct a high-resolution (HR) image from a low resolution (LR) image. Recently, sparse coding has become an increasingly popular method for SR. Despite its popularity, sparse coding can not capture shifted local patterns in images. Convolutional Sparse coding (CSC) addresses this problem by learning a shift-invariant dictionary composed of many filters. However, CSC oparates in the batch mode which needs large space and is computationally expensive. In this paper, we propose an online convolutional sparse coding based SR (OCSC-SR) to alleviate the above problems. Our proposed scheme consists of three components: a set of scalable LR filters, a set of scalable HR filters and a mapping function from LR feature maps to HR ones. In addition, we propose a novel perceptual loss function to achieve higher perceptual quality. Experiments demonstrate our OCSC-SR method outperforms state-of-the-art methods in terms of both peak signal-to-noise ratio (PSNR), visual perception and space complexity. 
+\end{abstract}
+
+\begin{IEEEkeywords}
+image super-resolution, convolutional sparse coding, online learning, perceptual loss
+\end{IEEEkeywords}
+
+\section{Introduction}
+Single image super-resolution (SISR) plays an important role in various computer vision tasks, such as surveillance imaging \cite{b1}, medical imaging, \cite{b2} hyperspectral imaging \cite{b3}, and natural image generation \cite{b4}. SISR is an inherently ill-posed inverse problem which aims to recover a high-resolution image from a low resolution input. In order to resolve this inverse problem, numerous SISR algorithms have been proposed, including interpolation-based methods \cite{b5}, reconstruction-based methods \cite{b6}, and learning-based methods \cite{b7}. Since interpolation-based methods attempted to estimate the missing pixels in HR images with simple smooth assumptions, it could not restore complex structures in natural images. Due to the complexity and diversity of natural scene images, reconstruction-based methods, which utilized the regular constraints with priori information to implement SR, could not meet the requirements of SISR with large upscaling factors. In contrast to the former two kinds of methods, the learning-based methods, such as markov random field (MRF) \cite{b8}, neighbor embedding \cite{b9}, sparse coding \cite{b10} and deep neural networks \cite{b11}, adaptively learned mapping between LR and HR pairs to recover missing edge and texture details in LR images. 
+
+Recently, sparse coding has become an increasingly popular method for SISR. Yang et al. \cite{b10} firstly provided a sparse coding based super-resolution method (SC-SR) which jointly trained two dictionaries for the LR and HR image patches. In SC-SR, overlapping  patches cropped from the input image are encoded by a LR dictionary. Then, the sparse coefficients are passed into a HR dictionary to reconstruct HR patches. Several approaches have been suggested
+to learn and optimize the dictionaries \cite{b12}, \cite{b13}, \cite{b14} or build efficient mapping functions \cite{b15}. However, conventional sparse coding can not capture local interactions as it assumes the patches of an image are independent of one another. Gu et al. \cite{b16} proposed a CSC based SR method to demonstrate the effectiveness of consistency constraint and the advantage of global image based CSC over conventional patch based sparse coding. CSC explicitly models local interactions through the convolution operator, however the resulting optimization problem is considerably more complex than traditional sparse coding. Bristow et al. \cite{b17} produced a fast convolutional sparse coding (FCSC) to address this problem. \cite{b18}, \cite{b19} also considered extending online learning to CSC.
+
+In this paper, we present a OCSC-SR method to address the aforementioned issues. The main contributions of our work include:
+\begin{itemize}
+\item We propose a scalable online convolutional sparse coding method for image SR. The proposed OCSC-SR method requires much less space space and converges much faster than existing CSC algorithms while having better reconstruction performance for image SR.
+
+\item Our OCSC-SR introduces a novel perceptual loss function utilizing the image features generated by the convolutional sparse representation, which are more robust to changes in pixel space.
+
+\item We evaluate OCSC-SR on three public benchmark datasets. The results show our model outperforms the state of the arts for SISR with high upscaling factors(4$\times$).
+\end{itemize}
+
+\section{Related Works}
+
+\subsection{Convolutional Sparse Coding for Super-Resolution}
+
+The IEEEtran class file is used to format your paper and style the text. 
+\subsection{Online Convolutional Sparse Coding}
+\subsection{Perceptual Loss Function}
+
+
+\section{Online Convolutional Sparse Coding based Super-Resolution}
+Before you begin to format your paper, first write and save the content as a 
+separate text file. Complete all content and organizational editing before 
+formatting. Please note sections \ref{AA}-- \ref{SHFL} below for more information on 
+proofreading, spelling and grammar.
+
+Keep your text and graphic files separate until after the text has been 
+formatted and styled. Do not number text heads---{\LaTeX} will do that 
+for you.
+
+\subsection{Scable LR Filter Learning} \label{AA}
+Define abbreviations and acronyms the first time they are used in the text, 
+even after they have been defined in the abstract. Abbreviations such as 
+IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
+abbreviations in the title or heads unless they are unavoidable.
+
+\subsection{Scable HR Filter Learning} \label{SHFL}
+\begin{itemize}
+\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
+\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
+\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
+\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
+\end{itemize}
+
+\subsection{Maping Function Learning}
+Number equations consecutively. To make your 
+equations more compact, you may use the solidus (~/~), the exp function, or 
+appropriate exponents. Italicize Roman symbols for quantities and variables, 
+but not Greek symbols. Use a long dash rather than a hyphen for a minus 
+sign. Punctuate equations with commas or periods when they are part of a 
+sentence, as in:
+\begin{equation}
+a+b=\gamma\label{eq}
+\end{equation}
+
+Be sure that the 
+symbols in your equation have been defined before or immediately following 
+the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
+the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+
+\subsection{Testing}
+
+Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
+of ``hard'' references (e.g., \verb|(1)|). That will make it possible
+to combine sections, add equations, or change the order of figures or
+citations without having to go through the file line by line.
+
+Please don't use the \verb|{eqnarray}| equation environment. Use
+\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
+environment leaves unsightly spaces around relation symbols.
+
+Please note that the \verb|{subequations}| environment in {\LaTeX}
+will increment the main equation counter even when there are no
+equation numbers displayed. If you forget that, you might write an
+article in which the equation numbers skip from (17) to (20), causing
+the copy editors to wonder if you've discovered a new method of
+counting.
+
+{\BibTeX} does not work by magic. It doesn't get the bibliographic
+data from thin air but from .bib files. If you use {\BibTeX} to produce a
+bibliography you must send the .bib files. 
+
+{\LaTeX} can't read your mind. If you assign the same label to a
+subsubsection and a table, you might find that Table I has been cross
+referenced as Table IV-B3. 
+
+{\LaTeX} does not have precognitive abilities. If you put a
+\verb|\label| command before the command that updates the counter it's
+supposed to be using, the label will pick up the last counter to be
+cross referenced instead. In particular, a \verb|\label| command
+should not go before the caption of a figure or a table.
+
+Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
+will not stop equation numbers inside \verb|{array}| (there won't be
+any anyway) and it might stop a wanted equation number in the
+surrounding equation.
+
+\section{Experiments}
+
+\subsection{Figures and Tables}
+\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
+bottom of columns. Avoid placing them in the middle of columns. Large 
+figures and tables may span across both columns. Figure captions should be 
+below the figures; table heads should appear above the tables. Insert 
+figures and tables after they are cited in the text. Use the abbreviation 
+``Fig.~\ref{fig}'', even at the beginning of a sentence.
+
+\begin{table}[htbp]
+\caption{Table Type Styles}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
+\cline{2-4} 
+\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
+\hline
+copy& More table copy$^{\mathrm{a}}$& &  \\
+\hline
+\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
+
+\begin{figure}[htbp]
+%\centerline{\includegraphics{fig1.png}}
+\caption{Example of a figure caption.}
+\label{fig}
+\end{figure}
+
+Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
+rather than symbols or abbreviations when writing Figure axis labels to 
+avoid confusing the reader. As an example, write the quantity 
+``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
+units in the label, present them within parentheses. Do not label axes only 
+with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
+\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
+quantities and units. For example, write ``Temperature (K)'', not 
+``Temperature/K''.
+
+\section{Conclusion}
+\section*{Acknowledgment}
+
+The preferred spelling of the word ``acknowledgment'' in America is without 
+an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
+G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
+acknowledgments in the unnumbered footnote on the first page.
+
+\section*{References}
+
+\begin{thebibliography}{00}
+\bibitem{b1} Y. Yang, P. Bi and Y. Liu, "License Plate Image Super-Resolution Based on Convolutional Neural Network," 2018 IEEE 3rd International Conference on Image, Vision and Computing (ICIVC), Chongqing, 2018, pp. 723-727.
+\bibitem{b2} N. Zhao, Q. Wei, A. Basarab, D. Kouamé and J. Tourneret, "Single image super-resolution of medical ultrasound images using a fast algorithm," 2016 IEEE 13th International Symposium on Biomedical Imaging (ISBI), Prague, 2016, pp. 473-476.
+\bibitem{b3} W. Dong et al., "Hyperspectral Image Super-Resolution via Non-Negative Structured Sparse Representation," in IEEE Transactions on Image Processing, vol. 25, no. 5, pp. 2337-2352, May 2016.
+\bibitem{b4} Y. Chen, Y. Tai, X. Liu, C. Shen and J. Yang, "FSRNet: End-to-End Learning Face Super-Resolution with Facial Priors," 2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition, Salt Lake City, UT, 2018, pp. 2492-2501.
+\bibitem{b5} Y. Zhang, Q. Fan, F. Bao, Y. Liu and C. Zhang, "Single-Image Super-Resolution Based on Rational Fractal Interpolation," in IEEE Transactions on Image Processing, vol. 27, no. 8, pp. 3782-3797, Aug. 2018.
+\bibitem{b6} H. Takeda, S. Farsiu and P. Milanfar, "Kernel Regression for Image Processing and Reconstruction," in IEEE Transactions on Image Processing, vol. 16, no. 2, pp. 349-366, Feb. 2007.
+\bibitem{b7} W. Shi et al., "Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network," 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV, 2016, pp. 1874-1883.
+\bibitem{b8} J. Chen, J. Nunez-Yanez and A. Achim, "Joint video fusion and super resolution based on Markov random fields," 2014 IEEE International Conference on Image Processing (ICIP), Paris, 2014, pp. 2150-2154.
+\bibitem{b9} M. Türkan, D. Thoreau and P. Guillotel, "Iterated neighbor-embeddings for image super-resolution," 2014 IEEE International Conference on Image Processing (ICIP), Paris, 2014, pp. 3887-3891.
+\bibitem{b10} J. Yang, J. Wright, T. S. Huang and Y. Ma, "Image Super-Resolution Via Sparse Representation," in IEEE Transactions on Image Processing, vol. 19, no. 11, pp. 2861-2873, Nov. 2010.
+\bibitem{b11} C. Dong, C. C. Loy, K. He and X. Tang, "Image Super-Resolution Using Deep Convolutional Networks," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 38, no. 2, pp. 295-307, 1 Feb. 2016.
+
+
+\bibitem{b12} J. Shi and C. Qi, "Low-rank sparse representation for single image super-resolution via self-similarity learning," 2016 IEEE International Conference on Image Processing (ICIP), Phoenix, AZ, 2016, pp. 1424-1428.
+\bibitem{b13} J. Jiang, J. Ma, C. Chen, Z. Wang and T. Lu, "Smooth sparse representation for noise robust face super-resolution," 2016 Visual Communications and Image Processing (VCIP), Chengdu, 2016, pp. 1-4.
+\bibitem{b14} Y. Xu, Z. Wu, J. Chanussot and Z. Wei, "Nonlocal Patch Tensor Sparse Representation for Hyperspectral Image Super-Resolution," in IEEE Transactions on Image Processing, vol. 28, no. 6, pp. 3034-3047, June 2019.
+\bibitem{b15}K. I. Kim and Y. Kwon, "Single-Image Super-Resolution Using Sparse Regression and Natural Image Prior," in IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 32, no. 6, pp. 1127-1133, June 2010.
+\bibitem{b16} S. Gu, W. Zuo, Q. Xie, D. Meng, X. Feng and L. Zhang, "Convolutional Sparse Coding for Image Super-Resolution," 2015 IEEE International Conference on Computer Vision (ICCV), Santiago, 2015, pp. 1823-1831.
+\bibitem{b17} H. Bristow, A. Eriksson and S. Lucey, "Fast Convolutional Sparse Coding," 2013 IEEE Conference on Computer Vision and Pattern Recognition, Portland, OR, 2013, pp. 391-398.
+\bibitem{b18} K. Degraux, U. S. Kamilov, P. T. Boufounos and D. Liu, "Online convolutional dictionary learning for multimodal imaging," 2017 IEEE International Conference on Image Processing (ICIP), Beijing, 2017, pp. 1617-1621.
+\bibitem{b19} Y. Wang, Q. Yao, J. T. Kwok and L. M. Ni, "Scalable Online Convolutional Sparse Coding," in IEEE Transactions on Image Processing, vol. 27, no. 10, pp. 4850-4859, Oct. 2018.
+
+\end{thebibliography}
+\vspace{12pt}
+\color{red}
+IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
+\end{document}
+
